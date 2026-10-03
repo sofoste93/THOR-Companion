@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.sofoste.thorcompanion.ThorController" styleClass="app-shell">
+    <top>
+        <VBox>
+            <HBox alignment="CENTER_LEFT" spacing="18" styleClass="topbar">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="THOR" styleClass="brand"/>
+                    <Label text="LOCAL COMPANION · FIRST SIGNAL" styleClass="brand-subtitle"/>
+                </VBox>
+                <HBox alignment="CENTER" spacing="8" styleClass="signal-pill">
+                    <Label fx:id="signalDot" text="●" styleClass="signal-dot"/>
+                    <Label fx:id="signalLabel" text="SIGNAL ONLINE" styleClass="signal-text"/>
+                </HBox>
+                <VBox alignment="CENTER_RIGHT">
+                    <Label fx:id="callsignLabel" text="CALLSIGN COMMANDER" styleClass="callsign"/>
+                    <Label fx:id="clockLabel" text="20:26:04" styleClass="clock"/>
+                </VBox>
+                <padding><Insets top="20" right="28" bottom="20" left="28"/></padding>
+            </HBox>
+            <Region prefHeight="3" styleClass="energy-line"/>
+        </VBox>
+    </top>
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="main-tabs">
+            <tabs>
+                <Tab fx:id="bridgeTab" text="Bridge">
+                    <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="content-scroll">
+                        <HBox spacing="18" styleClass="content-grid">
+                            <VBox spacing="16" HBox.hgrow="ALWAYS">
+                                <VBox spacing="8" styleClass="card telemetry-card">
+                                    <Label fx:id="systemTitle" text="SYSTEM TELEMETRY" styleClass="section-title"/>
+                                    <GridPane hgap="14" vgap="12">
+                                        <columnConstraints>
+                                            <ColumnConstraints minWidth="76"/>
+                                            <ColumnConstraints hgrow="ALWAYS"/>
+                                            <ColumnConstraints minWidth="58" halignment="RIGHT"/>
+                                        </columnConstraints>
+                                        <Label fx:id="cpuLabel" text="CPU" GridPane.rowIndex="0" styleClass="metric-label"/>
+                                        <ProgressBar fx:id="cpuBar" progress="0.18" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                        <Label fx:id="cpuValue" text="18%" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="metric-value"/>
+                                        <Label fx:id="memoryLabel" text="MEMORY" GridPane.rowIndex="1" styleClass="metric-label"/>
+                                        <ProgressBar fx:id="memoryBar" progress="0.42" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                        <Label fx:id="memoryValue" text="42%" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="metric-value"/>
+                                        <Label fx:id="runtimeLabel" text="RUNTIME" GridPane.rowIndex="2" styleClass="metric-label"/>
+                                        <Region GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                        <Label fx:id="runtimeValue" text="02h 17m" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="metric-value"/>
+                                    </GridPane>
+                                </VBox>
+                                <VBox spacing="8" styleClass="card" VBox.vgrow="ALWAYS">
+                                    <Label fx:id="companionTitle" text="COMPANION CHANNEL" styleClass="section-title"/>
+                                    <Label fx:id="companionHint" text="Offline command link" styleClass="muted"/>
+                                    <ListView fx:id="chatList" prefHeight="330" VBox.vgrow="ALWAYS" styleClass="chat-list"/>
+                                    <HBox spacing="10">
+                                        <TextField fx:id="commandInput" promptText="Message THOR or enter /help" onAction="#sendCommand" HBox.hgrow="ALWAYS"/>
+                                        <Button fx:id="sendButton" text="TRANSMIT" onAction="#sendCommand" styleClass="primary-button"/>
+                                    </HBox>
+                                </VBox>
+                            </VBox>
+                            <VBox spacing="16" minWidth="330" prefWidth="350">
+                                <VBox spacing="10" styleClass="card timer-card">
+                                    <Label fx:id="timerTitle" text="MISSION TIMER" styleClass="section-title"/>
+                                    <Label fx:id="timerValue" text="00:00" styleClass="timer-value"/>
+                                    <Button fx:id="cancelTimerButton" text="CANCEL TIMER" onAction="#cancelTimer" maxWidth="Infinity" styleClass="ghost-button"/>
+                                </VBox>
+                                <VBox spacing="10" styleClass="card" VBox.vgrow="ALWAYS">
+                                    <Label fx:id="notesTitle" text="QUICK NOTES" styleClass="section-title"/>
+                                    <Label fx:id="notesHint" text="Stored locally on this device" styleClass="muted"/>
+                                    <ListView fx:id="notesList" VBox.vgrow="ALWAYS" styleClass="notes-list"/>
+                                    <TextField fx:id="noteInput" promptText="New note" onAction="#addNote"/>
+                                    <Button fx:id="addNoteButton" text="ADD NOTE" onAction="#addNote" maxWidth="Infinity" styleClass="secondary-button"/>
+                                </VBox>
+                            </VBox>
+                            <padding><Insets top="20" right="24" bottom="22" left="24"/></padding>
+                        </HBox>
+                    </ScrollPane>
+                </Tab>
+                <Tab fx:id="notesTab" text="Notes">
+                    <VBox spacing="12" styleClass="page card-page">
+                        <Label fx:id="notesArchiveTitle" text="LOCAL NOTE ARCHIVE" styleClass="page-title"/>
+                        <Label fx:id="notesArchiveHint" text="Your latest notes remain available between missions." styleClass="muted"/>
+                        <ListView fx:id="notesArchiveList" VBox.vgrow="ALWAYS" styleClass="notes-list"/>
+                    </VBox>
+                </Tab>
+                <Tab fx:id="journalTab" text="Journal">
+                    <VBox spacing="12" styleClass="page">
+                        <Label fx:id="journalTitle" text="MISSION JOURNAL" styleClass="page-title"/>
+                        <ListView fx:id="journalList" VBox.vgrow="ALWAYS" styleClass="journal-list"/>
+                    </VBox>
+                </Tab>
+                <Tab fx:id="settingsTab" text="Settings">
+                    <HBox alignment="TOP_CENTER" styleClass="page">
+                        <VBox spacing="18" maxWidth="650" styleClass="card settings-card">
+                            <Label fx:id="settingsTitle" text="COMPANION SETTINGS" styleClass="page-title"/>
+                            <GridPane hgap="18" vgap="16">
+                                <columnConstraints><ColumnConstraints minWidth="180"/><ColumnConstraints hgrow="ALWAYS"/></columnConstraints>
+                                <Label fx:id="languageLabel" text="Language" styleClass="field-label"/>
+                                <ChoiceBox fx:id="languageChoice" maxWidth="Infinity" GridPane.columnIndex="1"/>
+                                <Label fx:id="callsignSettingLabel" text="Callsign" GridPane.rowIndex="1" styleClass="field-label"/>
+                                <TextField fx:id="callsignInput" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                            </GridPane>
+                            <CheckBox fx:id="reducedMotionCheck" text="Reduce interface motion"/>
+                            <Button fx:id="saveSettingsButton" text="SAVE SETTINGS" onAction="#saveSettings" maxWidth="Infinity" styleClass="primary-button"/>
+                            <Separator/>
+                            <Label fx:id="privacyTitle" text="LOCAL BY DESIGN" styleClass="section-title"/>
+                            <Label fx:id="privacyText" wrapText="true" styleClass="body-copy"/>
+                        </VBox>
+                    </HBox>
+                </Tab>
+                <Tab fx:id="helpTab" text="Help">
+                    <ScrollPane fitToWidth="true" styleClass="content-scroll">
+                        <VBox spacing="18" styleClass="page">
+                            <Label fx:id="helpTitle" text="THOR FLIGHT MANUAL" styleClass="page-title"/>
+                            <Label fx:id="helpIntro" wrapText="true" styleClass="lead-copy"/>
+                            <VBox spacing="8" styleClass="card">
+                                <Label fx:id="commandsTitle" text="OFFLINE COMMANDS" styleClass="section-title"/>
+                                <Label fx:id="commandsText" wrapText="true" styleClass="code-copy"/>
+                            </VBox>
+                            <VBox spacing="10" styleClass="card">
+                                <Label fx:id="dataTitle" text="YOUR DATA FOLDER" styleClass="section-title"/>
+                                <Label fx:id="dataPath" wrapText="true" styleClass="path-copy"/>
+                                <Button fx:id="openDataButton" text="OPEN DATA FOLDER" onAction="#openDataFolder" styleClass="secondary-button"/>
+                            </VBox>
+                            <Label fx:id="aboutText" wrapText="true" styleClass="muted"/>
+                        </VBox>
+                    </ScrollPane>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_LEFT" styleClass="statusbar">
+            <Label fx:id="footerStatus" text="SYSTEM READY" styleClass="footer-status"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="THOR COMPANION 1.0.0  ·  LOCAL MODE" styleClass="footer-meta"/>
+            <padding><Insets top="9" right="24" bottom="9" left="24"/></padding>
+        </HBox>
+    </bottom>
+</BorderPane>

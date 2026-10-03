@@ -1,0 +1,14 @@
+target/
+dist/
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.classpath
+.project
+.settings/
+.DS_Store
+*.log
+*.pfx
+*.p12
